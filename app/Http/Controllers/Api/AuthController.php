@@ -64,6 +64,9 @@ class AuthController extends Controller
         $data = $request->only(['first_name','last_name','email','password','repassword','sex','phone','birthday','description','address','company','relationships','phone_parent']);
         $data['password'] = Hash::make($data['password']);
 
+        if ($validator->fails()) {
+            return $this->api_response_error([ 'validator' => $validator->errors()]);
+        }
             if(User::create($data))
             {
 
@@ -76,9 +79,56 @@ class AuthController extends Controller
             ]);
         }
 
-    
+        public function edit(Request $request , $id)
+        {
 
+            $validator = Validator::make($request->all(),[
+                "first_name"=>"required",
+                "last_name"=>"required",
+                "password" => "required | between:6,20",
+                "repassword" => "required | same:password",
+                "sex"=> "required",
+                "phone"=> "required | between:11,20",
+                "birthday"=> "required",
+                "address"=>"required",
+                "company"=>"required",
+                "relationships"=>"required",
+                "phone_parent"=>"required | between:11,20 "
 
+            ],$this->message());
+            if($validator->fails())
+            {
+                return $this->api_response_error([ 'validator' => $validator->errors()]);
+            }
+            $data = $request->only(['first_name','last_name','password','repassword', 'sex',
+                'phone','birthday','address','relationships','phone_parent']);
+
+           $data['password'] = Hash::make($data['password']);
+            if( User::find($id)->update($data))
+            {
+                return $this->api_response([
+                   'message'=> 'Sửa thành công'
+                ]);
+            }
+            return $this->api_response_error([
+               'message'=>'Sửa thất bại'
+            ]);
+        }
+
+        public function destroy(Request $request,$id)
+        {
+            $user = User::find($id);
+            $data = $request->all();
+            if($user->delete($data))
+            {
+                return $this->api_response([
+                   'message'=>'Xóa thành công'
+                ]);
+            }
+            return $this->api_response_error([
+                'message'=>'Xóa thất bại'
+            ]);
+        }
     private  function message(){
         $messages = [
             'same'    => 'The :attribute and :other must match.',

@@ -17,6 +17,8 @@ Route::group(['namespace' => 'Api'],function (){
 
     Route::post('/login',"AuthController@login");
     Route::post('/register',"AuthController@register");
+    Route::post('/edit/{id}',"AuthController@edit");
+    Route::post('/delete/{id}' ,"AuthController@destroy");
 
 
     Route::group([ "prefix" => "v1.0",'middleware' => 'token'],function (){
