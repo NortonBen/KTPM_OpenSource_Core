@@ -17,8 +17,11 @@ class UserController extends Controller
     {
         $user = DB::table("users");
         if($request->has("search")){
-            $user->where("first_name","%",$request->get("search"));
-            $user->where("last_name","%",$request->get("search"));
+            $user->where("first_name","like",'%'.$request->get("search").'%');
+            $user->where("last_name","like",'%'.$request->get("search").'%');
+            $user->where("phone","like",'%'.$request->get("search").'%');
+            $user->where("address","like",'%'.$request->get("search").'%');
+            $user->where("description","like",'%'.$request->get("search").'%');
         }
 
         if($request->has("order_by")){
@@ -30,9 +33,10 @@ class UserController extends Controller
                 $user->orderBy("birthday");
             }
         }
-        $user = User::all();
+        $data  = $user->select( "id", "first_name", "last_name", "email", "sex", "phone","birthday", "description","address","company","relationships","phone_parent")->get();
+        //$data = User::all();
         return $this->api_response([
-            'users' => $user
+            'users' => $data
         ]);
     }
     
