@@ -18,7 +18,7 @@ class CreateCaptionsTable extends Migration
             $table->text("text");
             $table->integer("like");
             $table->integer("unlike");
-            $table->integer("user_id");
+            $table->integer("user_id")->unsigned();
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
