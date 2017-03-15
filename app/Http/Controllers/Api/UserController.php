@@ -18,10 +18,10 @@ class UserController extends Controller
         $user = DB::table("users");
         if($request->has("search")){
             $user->where("first_name","like",'%'.$request->get("search").'%');
-            $user->where("last_name","like",'%'.$request->get("search").'%');
-            $user->where("phone","like",'%'.$request->get("search").'%');
-            $user->where("address","like",'%'.$request->get("search").'%');
-            $user->where("description","like",'%'.$request->get("search").'%');
+            $user->orwhere("last_name","like",'%'.$request->get("search").'%');
+            $user->orwhere("phone","like",'%'.$request->get("search").'%');
+            $user->orwhere("address","like",'%'.$request->get("search").'%');
+            $user->orwhere("description","like",'%'.$request->get("search").'%');
         }
 
         if($request->has("order_by")){
