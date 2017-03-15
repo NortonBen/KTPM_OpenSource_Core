@@ -8,6 +8,7 @@ use Validator;
 
 class AuthController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +26,7 @@ class AuthController extends Controller
             return $this->api_response_error([ 'validator' => $validator->errors()]);
         }
 
-        
+
 
         return $this->api_response_error([ 'message' => ['Tài khoản hoặc mật khẩu không chính xác!']]);
     }

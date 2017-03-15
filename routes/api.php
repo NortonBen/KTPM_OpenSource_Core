@@ -13,14 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'Api'],function (){
+
+    Route::post('/login',"AuthController@login");
+    Route::post('/register',"AuthController@register");
+
+
+    Route::group([ "prefix" => "v1.0",'middleware' => 'token'],function (){
+        Route::get("/user","UserController@index");
+        Route::get("/user/{user}","UserController@show");
+        Route::post("/user","UserController@store");
+        Route::put("/user/{user}","UserController@update");
+        Route::delete("/user/{user}","UserController@destroy");
+    });
 });
-Route::post('/login',"Api\AuthController@login");
-Route::group([ "prefix" => "v1.0"],function (){
-    Route::get("/user","Api\UserController@index");
-    Route::get("/user/{user}","Api\UserController@show");
-    Route::post("/user","Api\UserController@store");
-    Route::put("/user/{user}","Api\UserController@update");
-    Route::delete("/user/{user}","Api\UserController@destroy");
-});
+
