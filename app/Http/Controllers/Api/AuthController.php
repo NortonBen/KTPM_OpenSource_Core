@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\LoginRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
 class AuthController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +27,13 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $this->api_response_error([ 'validator' => $validator->errors()]);
         }
+        $data  = $request->only(['email','password']);
 
-
-
+        if($token = JWTAuth::attempt($data)){
+            return $this->api_response([
+               'token' => $token
+            ]);
+        }
         return $this->api_response_error([ 'message' => ['Tài khoản hoặc mật khẩu không chính xác!']]);
     }
     
