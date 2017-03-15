@@ -6,6 +6,7 @@ use App\Http\Requests\Api\LoginRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Validator;
 
@@ -53,24 +54,29 @@ class AuthController extends Controller
             "address"=>"required",
             "company"=>"required",
             "relationships"=>"required",
-            "phone_parent"=>"required | between:11,20"
+            "phone_parent"=>"required | between:11,20 "
 
         ],$this->message());
         if ($validator->fails()) {
             return $this->api_response_error([ 'validator' => $validator->errors()]);
         }
+        //$data = $request->all();
         $data = $request->only(['first_name','last_name','email','password','repassword','sex','phone','birthday','description','address','company','relationships','phone_parent']);
-        if(User::create($data))
-        {
-            return $this->api_response([
-                'message' => 'Thêm thành công'
+        $data['password'] = Hash::make($data['password']);
+
+            if(User::create($data))
+            {
+
+                return $this->api_response([
+                    'message' => 'Thêm thành công'
+                ]);
+            }
+            return $this->api_response_error([
+               'message'=>'Thêm thất bại'
             ]);
         }
-        return $this->api_response_error([
-           'message'=>'Thêm thất bại'
-        ]);
 
-    }
+    
 
 
     private  function message(){
