@@ -8,14 +8,23 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller as BaseController;
+use Illuminate\Contracts\Validation\Validator;
 
 class Controller extends BaseController
 {
-    protected function api_response($data){
-
+    protected function api_response($data = array()){
+        return response()->json([
+            "success" => $data
+        ],200);
     }
 
-    private function api_response_error($data){
-        
+    /*
+     *  @param $data
+     *
+     */
+    protected function api_response_error($data = array()){
+        return response()->json([
+            'error' => $data
+        ],200);
     }
 }
