@@ -47,13 +47,13 @@ class AuthController extends Controller
             "password" => "required | between:6,20",
             "repassword" => "required | same:password",
             "sex"=> "required",
-            "phone"=> "required",
+            "phone"=> "required | between:11,20",
             "birthday"=> "required",
             "description"=>"required",
             "address"=>"required",
             "company"=>"required",
             "relationships"=>"required",
-            "phone_parent"=>"required"
+            "phone_parent"=>"required | between:11,20"
 
         ],$this->message());
         if ($validator->fails()) {
