@@ -15,8 +15,12 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api'],function (){
 
-    Route::post('/login',"AuthController@login");
-    Route::post('/register',"AuthController@register");
+    Route::get('/check',"HomeController@check");
+
+    Route::group(['middleware' => 'checkpost'], function (){
+        Route::post('/login',"AuthController@login");
+        Route::post('/register',"AuthController@register");
+    });
 
 
     Route::group([ "prefix" => "v1.0",'middleware' => 'token'],function (){
