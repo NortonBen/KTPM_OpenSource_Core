@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'Api'],function (){
-
+    
     Route::get('/check',"HomeController@check");
 
     Route::group(['middleware' => 'checkpost'], function (){
