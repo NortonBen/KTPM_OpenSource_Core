@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\ApiV2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,12 +18,10 @@ class HomeController extends Controller
             'iat' => $now,
             'exp' => $now + 300,
             'nbf' => $now,
-            'sub' => -1,
+            'sub' => 1,
             'jti' => md5('1'.$now)
         ]);
         $token = JWTAuth::encode($payload);
-        return $this->api_response([
-            'token' => $token->get()
-        ]);
+        return $this->api_response($token->get());
     }
 }
