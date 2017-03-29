@@ -28,7 +28,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public  function  test(Request $request){
+    public  function  test(Request $request,$part = 30){
         $user = DB::table("users");
         if($request->has("search")){
             $user->where("first_name","like",'%'.$request->get("search").'%');
