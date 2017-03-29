@@ -17,10 +17,12 @@ Route::group(['namespace' => 'Api'],function (){
     
     Route::get('/check',"HomeController@check");
 
-    Route::group(['middleware' => 'checkpost'], function (){
+    Route::get('/test',"HomeController@test");
+
+    //Route::group(['middleware' => 'checkpost'], function (){
         Route::post('/login',"AuthController@login");
         Route::post('/register',"AuthController@register");
-    });
+    //});
 
 
     Route::group([ "prefix" => "v1.0",'middleware' => 'token'],function (){
