@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\V2;
 
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -20,20 +20,23 @@ class CheckPostMiddleware
         if(!$request->has('token')){
             return response()->json(
                 [
-                    'error' => ['message' => 'not_token']
+                    "status" => "error",
+                    "data" => null,
+                    "message" =>'not_token'
                 ]
-            ,200);
+                ,200);
         }
         try {
             $user = JWTAuth::parseToken()->toUser();
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json(
                 [
-                    'error' => ['message' => 'token_expired']
+                    "status" => "error",
+                    "data" => null,
+                    "message" =>'token_expired'
                 ]
                 ,200);
         }
-       
         return $next($request);
     }
 }

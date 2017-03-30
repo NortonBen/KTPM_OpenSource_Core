@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,7 +16,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request,$part = 30)
     {
         $user = DB::table("users");
         if($request->has("search")){
@@ -33,7 +36,7 @@ class UserController extends Controller
                 $user->orderBy("birthday");
             }
         }
-        $data  = $user->select( "id", "first_name", "last_name", "email", "sex", "phone","birthday", "description","address","company","relationships","phone_parent")->get();
+        $data  = $user->select( "id", "first_name", "last_name", "email", "sex", "phone","birthday", "description","address","company","relationships","phone_parent")->simplePaginate($part);
         //$data = User::all();
         return $this->api_response([
             'users' => $data
@@ -48,7 +51,45 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
 
+=======
+            $validator = Validator::make($request->all(),[
+                "first_name"=>"required",
+                "last_name"=>"required",
+                "email"=>"required | email",
+                "password" => "required | between:6,20",
+                "repassword" => "required | same:password",
+                "sex"=> "required",
+                "phone"=> "required | between:11,20",
+                "birthday"=> "required",
+                "description"=>"required",
+                "address"=>"required",
+                "company"=>"required",
+                "relationships"=>"required",
+                "phone_parent"=>"required | between:11,20 "
+
+            ],$this->message());
+            if ($validator->fails()) {
+                return $this->api_response_error([ 'validator' => $validator->errors()]);
+            }
+            //$data = $request->all();
+            $data = $request->only(['first_name','last_name','email','password','sex','phone','birthday','description','address','company','relationships','phone_parent']);
+            $data['password'] = Hash::make($data['password']);
+
+            if ($validator->fails()) {
+                return $this->api_response_error([ 'validator' => $validator->errors()]);
+            }
+            if(User::create($data))
+            {
+                return $this->api_response([
+                    'message' => 'Thêm thành công'
+                ]);
+            }
+            return $this->api_response_error([
+               'message'=>'Thêm thất bại'
+            ]);
+>>>>>>> 5223f2a9d8ede21822576f28dc191047776e4d8b
     }
 
     /**
@@ -57,9 +98,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+         return $this->api_response([
+            'user' => $user
+        ]);
     }
 
     /**
@@ -69,9 +112,63 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function password(Request $request,User $user)
     {
-      
+            $validator = Validator::make($request->all(),[
+                "oldpassword" => "required",
+                "password" => "required | between:6,20",
+                "repassword" => "required | same:password",
+            ],$this->message());
+            if($validator->fails())
+            {
+                return $this->api_response_error([ 'validator' => $validator->errors()]);
+            }
+            if(!$user->checkPassword($request->get("oldpassword"))){
+                    return $this->api_response_error([
+                        'message'=>'Mật Khẩu Sai!'
+                    ]);
+            }
+            $data = [];
+            $data['password'] = Hash::make($request->get("password"));
+            if( $user->update($data))
+            {
+                return $this->api_response([
+                   'message'=> 'Sửa thành công'
+                ]);
+            }
+            return $this->api_response_error([
+               'message'=>'Sửa thất bại'
+            ]);
+    }
+
+    public function update(Request $request, User $user)
+    {
+            $validator = Validator::make($request->all(),[
+                "first_name"=>"required",
+                "last_name"=>"required",
+                "sex"=> "required",
+                "phone"=> "required | between:11,20",
+                "birthday"=> "required",
+                "address"=>"required",
+                "company"=>"required",
+                "relationships"=>"required",
+                "phone_parent"=>"required | between:11,20 "
+
+            ],$this->message());
+            if($validator->fails())
+            {
+                return $this->api_response_error([ 'validator' => $validator->errors()]);
+            }
+            $data = $request->only(['first_name','last_name', 'sex', 'phone','birthday','address','relationships','phone_parent']);
+            if($user->update($data))
+            {
+                return $this->api_response([
+                   'message'=> 'Sửa thành công'
+                ]);
+            }
+            return $this->api_response_error([
+               'message'=>'Sửa thất bại'
+            ]);
     }
 
     /**
@@ -80,8 +177,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        if($user->delete())
+        {
+            return $this->api_response([
+                'message'=>'Xóa thành công'
+            ]);
+        }
+        return $this->api_response_error([
+            'message'=>'Xóa thất bại'
+        ]);
     }
 }

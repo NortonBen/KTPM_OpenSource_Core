@@ -69,11 +69,7 @@
          
             <div class="content">
                 <div class="title m-b-md">
-                    Kĩ Thuật Phần Mềm - K12B
-                </div>
-
-                <div class="links">
-                    Đại học công nghệ thông tin và truyền thông Thái Nguyên
+                    404 Page not Found
                 </div>
             </div>
         </div>

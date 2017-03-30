@@ -41,7 +41,12 @@ class Kernel extends HttpKernel
             'bindings'
         ],
         'token' => [
+            \App\Http\Middleware\BlockMiddleware::class,
             'jwt.auth'
+        ],
+        'token.v2' => [
+            \App\Http\Middleware\BlockMiddleware::class,
+            \App\Http\Middleware\V2\JWTMiddleware::class
         ]
     ];
 
@@ -62,5 +67,6 @@ class Kernel extends HttpKernel
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
         'checkpost' => \App\Http\Middleware\CheckPostMiddleware::class,
+        'checkpost.v2' => \App\Http\Middleware\V2\CheckPostMiddleware::class,
     ];
 }

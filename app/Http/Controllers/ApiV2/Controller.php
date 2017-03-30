@@ -1,20 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wind
- * Date: 14/03/2017
- * Time: 10:18 SA
- */
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\ApiV2;
+
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as BaseController;
-use Illuminate\Contracts\Validation\Validator;
 
 class Controller extends BaseController
 {
-    protected function api_response($data = array()){
+    protected function api_response($data = null){
         return response()->json([
-            "success" => $data
+            "status" => "success",
+            "data" => $data,
+            "message" => null
         ],200);
     }
 
@@ -22,13 +19,15 @@ class Controller extends BaseController
      *  @param $data
      *
      */
-    protected function api_response_error($data = array()){
+    protected function api_response_error($data = null){
         return response()->json([
-            'error' => $data
+            "status" => "error",
+            "data" => [],
+            "message" => $data
         ],200);
     }
 
-      protected  function message(){
+    protected  function message(){
         $messages = [
             'same'    => 'The :attribute and :other must match.',
             'size'    => 'The :attribute must be exactly :size.',
@@ -40,5 +39,4 @@ class Controller extends BaseController
         ];
         return $messages;
     }
-
 }
