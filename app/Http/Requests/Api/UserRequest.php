@@ -24,7 +24,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'email' => 'unique:users,email'
         ];
     }
 }

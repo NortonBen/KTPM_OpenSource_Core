@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\LoginRequest;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
 use Validator;
 
 class AuthController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->checkToken();
+    }
 
     /**
      * Display a listing of the resource.
@@ -33,7 +40,7 @@ class AuthController extends Controller
 
         if($token = JWTAuth::attempt($data)){
             return $this->api_response([
-               'token' => $token
+                'token' => $token
             ]);
         }
         return $this->api_response_error([ 'message' => ['Tài khoản hoặc mật khẩu không chính xác!']]);
@@ -44,7 +51,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),[
            "first_name"=>"required",
             "last_name"=>"required",
-            "email"=>"required | email",
+            "email"=>"'email' => 'required | unique:users,email",
             "password" => "required | between:6,20",
             "repassword" => "required | same:password",
             "sex"=> "required",
@@ -129,6 +136,7 @@ class AuthController extends Controller
                 'message'=>'Xóa thất bại'
             ]);
         }
+
     private  function message(){
         $messages = [
             'same'    => 'The :attribute and :other must match.',

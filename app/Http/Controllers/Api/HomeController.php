@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function check(){
         $data = Carbon::now();
         $now = $data->timestamp;
-        //$payload = JWTFactory::sub(['created_at' => $now->toDateTimeString(), 'time' => 5])->make();
+        //$payload = JWTFactory::sub(['created_at' => $now->toDateTimeString(), 'time' => 30])->make();
         $payload = JWTFactory::make([
             'iss' => 'token_check_time_out',
             'iat' => $now,
