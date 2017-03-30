@@ -85,7 +85,7 @@ class AuthController extends Controller
                'message'=>'Thêm thất bại'
             ]);
         }
-<<<<<<< HEAD
+
 
         public function edit(Request $request , $id)
         {
@@ -151,7 +151,5 @@ class AuthController extends Controller
         return $messages;
     }
 
-=======
-  
->>>>>>> 5223f2a9d8ede21822576f28dc191047776e4d8b
+
 }
