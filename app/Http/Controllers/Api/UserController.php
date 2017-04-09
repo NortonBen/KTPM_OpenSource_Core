@@ -51,9 +51,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
-
-=======
             $validator = Validator::make($request->all(),[
                 "first_name"=>"required",
                 "last_name"=>"required",
@@ -89,7 +86,6 @@ class UserController extends Controller
             return $this->api_response_error([
                'message'=>'Thêm thất bại'
             ]);
->>>>>>> 5223f2a9d8ede21822576f28dc191047776e4d8b
     }
 
     /**
