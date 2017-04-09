@@ -19,16 +19,24 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->string('password');
-            $table->boolean('sex');
+            $table->unsignedInteger('sex');
             $table->string("phone",20);
             $table->date("birthday");
             $table->text("description");
             $table->string("address");
             $table->string("company");
-            $table->tinyInteger("relationships");
+            $table->unsignedInteger("relationships");
             $table->string("phone_parent",20);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('relationships')
+                ->references('id')
+                ->on('relationshipsTable');
+
+            $table->foreign('sex')
+                ->references('id')
+                ->on('Sexs');
         });
     }
 

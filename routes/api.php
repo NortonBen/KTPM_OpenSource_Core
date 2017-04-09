@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['namespace' => 'Apiv3', "prefix" => "data"],function (){
+    Route::get('/sexs',"DataController@sexs");
+    Route::get('/typeactions',"DataController@typeactions");
+    Route::get('/relationships',"DataController@relationships");
+});
 
 Route::group(['namespace' => 'Api'],function (){
     
@@ -67,5 +72,21 @@ Route::group(['namespace' => 'Apiv3', "prefix" => "v3.0"],function (){
         Route::post("/user/password/{user}","UserController@password");
         Route::put("/user/{user}","UserController@update");
         Route::delete("/user/{user}","UserController@destroy");
+
+        Route::get("/caption","CaptionController@index");
+        Route::get("/caption/{caption}","CaptionController@show");
+        Route::post("/caption","CaptionController@store");
+        Route::put("/caption/{caption}","CaptionController@update");
+        Route::delete("/caption/{caption}","CaptionController@destroy");
+
+        Route::get("/action/{caption}","ActionController@index");
+        Route::post("/action/{caption}","ActionController@store");
+        Route::delete("/action/{caption}","ActionController@destroy");
+
+        Route::get("/comment/{caption}","CommentController@index");
+        Route::post("/comment","CommentController@store");
+        Route::put("/comment/{comment}","CommentController@update");
+        Route::delete("/comment/{comment}","CommentController@destroy");
+
     });
 });

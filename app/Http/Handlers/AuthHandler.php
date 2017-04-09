@@ -26,7 +26,7 @@ class AuthHandler extends Handler
             $this->resuft =  [ 'success' => $token];
             return $this->resuft;
         }
-        $this->resuft =  [ 'error' => 'occur_error'];
+        $this->resuft =  [ 'error' => 'tài khoản hoặc mật khẩu sai!'];
         return $this->resuft;
     }
 
