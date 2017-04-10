@@ -23,10 +23,12 @@ class CreateMessagesTable extends Migration
 
             $table->foreign('user_send')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
             $table->foreign('user_receive')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

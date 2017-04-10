@@ -8,18 +8,17 @@ use Illuminate\Http\Request;
 
 class ActionController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->handler = new ActionHandler();
         $this->handler->setMessage($this->message());
+
     }
 
     public function index(Request $request, Caption $caption)
     {
-        if ($request->acceptsJson()) {
-            $data = $request->json()->all();
-            $this->handler->index($data, $caption);
-        }
+        $data = $request->only(['type','part']);
+        $this->handler->index($caption,$data);
         return $this->getResuft();
     }
 
@@ -34,7 +33,7 @@ class ActionController extends Controller
 
     public function destroy(Caption $caption)
     {
-        $this->handler->store($caption);
+        $this->handler->destroy($caption);
         return $this->getResuft();
     }
 }

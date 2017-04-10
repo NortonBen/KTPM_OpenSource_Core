@@ -33,16 +33,19 @@ class CommentHandler extends Handler
 
     public function store($data = array())
     {
+        $this->setData($data);
         $validator = Validator::make($data, [
             "text" => "required",
-            "user_id" => "required",
             "caption_id" => "required",
         ], $this->message);
+
         if ($validator->fails()) {
             $this->resuft = ['validator' => $validator->errors()];
             return $this->resuft;
         }
-
+        $user = Auth::user();
+        $data  = $this->only(['text','caption_id']);
+        $data['user_id'] = $user->id;
         if (Comment::create($data)) {
             $this->resuft = ['success' => 'true'];
             return $this->resuft;
@@ -53,6 +56,7 @@ class CommentHandler extends Handler
 
     public function update($data = array(), Comment $comment)
     {
+        $this->setData($data);
         $user = Auth::user();
         if ($comment->user_id != $user->id) {
             $this->resuft = ['error' => 'not accset'];
@@ -65,7 +69,7 @@ class CommentHandler extends Handler
             $this->resuft = ['validator' => $validator->errors()];
             return $this->resuft;
         }
-
+        $data  = $this->only(['text']);
         if ($comment->update($data)) {
             $this->resuft = ['success' => 'true'];
             return $this->resuft;

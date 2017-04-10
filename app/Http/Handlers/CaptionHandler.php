@@ -50,6 +50,7 @@ class CaptionHandler extends Handler
     public function store($data = array())
     {
         $user = Auth::user();
+        $this->setData($data);
         $validator = Validator::make($data, [
             "text" => "required",
         ], $this->message);
@@ -57,6 +58,7 @@ class CaptionHandler extends Handler
             $this->resuft = ['validator' => $validator->errors()];
             return $this->resuft;
         }
+        $data  = $this->only(['text']);
         $data['user_id'] = $user->id;
         if (Caption::create($data)) {
             $this->resuft = ['success' => 'true'];
@@ -69,6 +71,7 @@ class CaptionHandler extends Handler
 
     public function update($data = array(), Caption $caption)
     {
+        $this->setData($data);
         $user = Auth::user();
         if ($caption->user_id != $user->id) {
             $this->resuft = ['error' => 'not accset'];
@@ -82,6 +85,7 @@ class CaptionHandler extends Handler
             $this->resuft = ['validator' => $validator->errors()];
             return $this->resuft;
         }
+        $data  = $this->only(['text']);
         if ($caption->update($data)) {
             $this->resuft = ['success' => 'true'];
             return $this->resuft;
@@ -114,7 +118,7 @@ class CaptionHandler extends Handler
     public function show(Caption $caption)
     {
         $action = DB::table('actions')
-            ->where('caption_id', '=', $caption->id)->orderBy('type_action')
+            ->where('caption_id', '=', $caption->id)->groupBy('type_action')
             ->select('type_action', DB::raw('COUNT(id) as total'))->get();
         $comment = DB::table('comments')
             ->where('caption_id', '=', $caption->id)

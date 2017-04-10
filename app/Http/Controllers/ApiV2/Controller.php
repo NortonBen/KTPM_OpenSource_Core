@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    protected $handler = null;
+
     protected function api_response($data = null){
         return response()->json([
             "status" => "success",
@@ -38,5 +40,21 @@ class Controller extends BaseController
             'email' => 'Hãy nhập nhập đia chỉ email!'
         ];
         return $messages;
+    }
+
+    public function getResuft(){
+
+        if($this->handler->isValidator()){
+            return $this->api_response_error([ 'validator' => $this->handler->getValidator()]);
+        }
+
+        if($this->handler->isSuccess()){
+            return $this->api_response(['success'=> $this->handler->getSuccess()]);
+        }
+
+        if($this->handler->isError()){
+            return $this->api_response_error($this->handler->getError());
+        }
+        return null;
     }
 }

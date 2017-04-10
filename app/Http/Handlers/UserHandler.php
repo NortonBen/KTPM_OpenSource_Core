@@ -45,6 +45,7 @@ class UserHandler extends Handler
      */
     public function store($data = array())
     {
+        $this->setData($data);
         $validator = Validator::make($data,[
             "first_name"=>"required",
             "last_name"=>"required",
@@ -65,6 +66,7 @@ class UserHandler extends Handler
             $this->resuft =  [ 'validator' => $validator->errors()];
             return $this->resuft;
         }
+        $data = $this->only(['first_name','last_name','email','password','sex','phone','birthday','description','address','company','relationships','phone_parent']);
         $data['password'] = Hash::make($data['password']);
 
         if(User::create($data))
@@ -107,6 +109,7 @@ class UserHandler extends Handler
 
     public function update($data  = array(), User $user)
     {
+        $this->setData($data);
         $validator = Validator::make($data,[
             "first_name"=>"required",
             "last_name"=>"required",
@@ -124,6 +127,7 @@ class UserHandler extends Handler
             $this->resuft =  [ 'validator' => $validator->errors()];
             return $this->resuft;
         }
+        $data = $this->only(['first_name','last_name', 'sex', 'phone','birthday','address','relationships','phone_parent']);
         if($user->update($data))
         {
             $this->resuft =  [ 'success' => 'true'];

@@ -20,7 +20,8 @@ class CreateCaptionsTable extends Migration
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade');
             
 
         });

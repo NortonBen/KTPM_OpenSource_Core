@@ -57,6 +57,21 @@ Route::group(['namespace' => 'ApiV2', "prefix" => "v2.0"],function (){
         Route::post("/user/password/{user}","UserController@password");
         Route::put("/user/{user}","UserController@update");
         Route::delete("/user/{user}","UserController@destroy");
+
+        Route::get("/caption","CaptionController@index");
+        Route::get("/caption/{caption}","CaptionController@show");
+        Route::post("/caption","CaptionController@store");
+        Route::put("/caption/{caption}","CaptionController@update");
+        Route::delete("/caption/{caption}","CaptionController@destroy");
+
+        Route::get("/action/{caption}","ActionController@index");
+        Route::post("/action/{caption}","ActionController@store");
+        Route::delete("/action/{caption}","ActionController@destroy");
+
+        Route::get("/comment/{caption}","CommentController@index");
+        Route::post("/comment","CommentController@store");
+        Route::put("/comment/{comment}","CommentController@update");
+        Route::delete("/comment/{comment}","CommentController@destroy");
     });
 });
 

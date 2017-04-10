@@ -12,6 +12,7 @@ namespace App\Http\Handlers;
 use App\Action;
 use App\Caption;
 use Validator;
+use DB;
 use App\TypeAction;
 use Illuminate\Support\Facades\Auth;
 

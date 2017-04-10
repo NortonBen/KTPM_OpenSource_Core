@@ -15,10 +15,9 @@ class CaptionController extends Controller
     }
 
     public function index(Request $request){
-        if($request->acceptsJson()){
-            $data = $request->json()->all();
-            $this->handler->index($data);
-        }
+
+        $data = $request->only(['order_by','part','search']);
+        $this->handler->index($data);
         return $this->getResuft();
     }
 

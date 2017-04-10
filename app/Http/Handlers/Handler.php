@@ -55,4 +55,12 @@ class Handler
         return $this->resuft['error'];
     }
 
+    public function only($data = array()){
+        $output = [];
+        foreach ($data as $item ){
+            $output[$item] = $this->data[$item];
+        }
+        return $output;
+    }
+
 }

@@ -17,10 +17,8 @@ class CommentController extends Controller
 
     public function index(Caption $caption, Request $request)
     {
-        if ($request->acceptsJson()) {
-            $data = $request->json()->all();
-            $this->handler->index($data, $caption);
-        }
+        $data = $request->only(['part']);
+        $this->handler->index($data, $caption);
         return $this->getResuft();
     }
 

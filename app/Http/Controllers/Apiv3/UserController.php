@@ -17,10 +17,9 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if($request->acceptsJson()){
-            $data = $request->json()->all();
-            $this->handler->index($data);
-        }
+        $data = $request->only(['order_by','part','search']);
+        $this->handler->index($data);
+
         if($this->handler->isValidator()){
             return $this->api_response_error([ 'validator' => $this->handler->getValidator()]);
         }
