@@ -164,6 +164,6 @@ class UserController extends Controller
     }
 
     public function auth(){
-        return Auth::user();
+         return $this->api_response( Auth::user());
     }
 }
