@@ -162,4 +162,8 @@ class UserController extends Controller
         }
         return $this->api_response_error(['occur_error']);
     }
+
+    public function auth(){
+        return Auth::user();
+    }
 }

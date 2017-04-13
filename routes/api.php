@@ -51,6 +51,7 @@ Route::group(['namespace' => 'ApiV2', "prefix" => "v2.0"],function (){
     Route::post('/register',"AuthController@register");
     
     Route::group(['middleware' => 'token.v2'],function (){
+        Route::get("/user/account","UserController@auth");
         Route::get("/user","UserController@index");
         Route::get("/user/{user}","UserController@show");
         Route::post("/user","UserController@store");

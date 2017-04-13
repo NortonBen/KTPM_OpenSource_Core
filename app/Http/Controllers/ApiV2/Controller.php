@@ -49,7 +49,7 @@ class Controller extends BaseController
         }
 
         if($this->handler->isSuccess()){
-            return $this->api_response(['success'=> $this->handler->getSuccess()]);
+            return $this->api_response( $this->handler->getSuccess());
         }
 
         if($this->handler->isError()){
